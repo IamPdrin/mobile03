@@ -176,4 +176,5 @@ Os estilos estão centralizados em `styles/style.js` para:
 
 ## 👨‍💻 Autor
 
+
 Desenvolvido por Pedro Henrique Bomfim Wolski.
