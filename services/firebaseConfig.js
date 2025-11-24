@@ -4,15 +4,15 @@ import { getFirestore } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
-// Configurações do Firebase usando variáveis de ambiente
+// Configurações do Firebase usando variáveis de ambiente (compatível com Expo SDK 49+)
 const firebaseConfig = {
-  apiKey: Constants.manifest.extra.FIREBASE_API_KEY,
-  authDomain: Constants.manifest.extra.FIREBASE_AUTH_DOMAIN,
-  projectId: Constants.manifest.extra.FIREBASE_PROJECT_ID,
-  storageBucket: Constants.manifest.extra.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: Constants.manifest.extra.FIREBASE_MESSAGING_SENDER_ID,
-  appId: Constants.manifest.extra.FIREBASE_APP_ID,
-  measurementId: Constants.manifest.extra.FIREBASE_MEASUREMENT_ID,
+  apiKey: Constants?.expoConfig?.extra?.FIREBASE_API_KEY,
+  authDomain: Constants?.expoConfig?.extra?.FIREBASE_AUTH_DOMAIN,
+  projectId: Constants?.expoConfig?.extra?.FIREBASE_PROJECT_ID,
+  storageBucket: Constants?.expoConfig?.extra?.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: Constants?.expoConfig?.extra?.FIREBASE_MESSAGING_SENDER_ID,
+  appId: Constants?.expoConfig?.extra?.FIREBASE_APP_ID,
+  measurementId: Constants?.expoConfig?.extra?.FIREBASE_MEASUREMENT_ID,
 };
 
 // Inicializa o app Firebase

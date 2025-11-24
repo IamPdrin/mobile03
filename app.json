@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "appAsync",
-    "slug": "appAsync",
-    "scheme": "appasync",
+    "name": "TripHub",
+    "slug": "TripHub",
+    "scheme": "triphub",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -42,9 +42,19 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+
     "plugins": [
       "expo-router",
       "expo-sqlite"
-    ]
+    ],
+    "extra": {
+      "FIREBASE_API_KEY": "AIzaSyBdCICQLChnG2Fmxjmrp27KJaIp5RV5ItE",
+      "FIREBASE_AUTH_DOMAIN": "expostore-8dfee.firebaseapp.com",
+      "FIREBASE_PROJECT_ID": "expostore-8dfee",
+      "FIREBASE_STORAGE_BUCKET": "expostore-8dfee.firebasestorage.app",
+      "FIREBASE_MESSAGING_SENDER_ID": "479090574608",
+      "FIREBASE_APP_ID": "1:479090574608:web:61ac162a49fc4ef7535195",
+      "FIREBASE_MEASUREMENT_ID": "G-8VZYJYVPC4"
+    }
   }
 }

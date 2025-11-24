@@ -408,6 +408,11 @@ const estilos = StyleSheet.create({
         marginRight: 12,
     },
 
+    iconeInicio: {
+        fontSize: 30,
+        marginBottom: 20,
+    },
+
     semEventos: {
         fontSize: 14,
         color: "#999",

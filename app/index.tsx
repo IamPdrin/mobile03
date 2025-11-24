@@ -21,7 +21,8 @@ export default function App() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={estilos.container}>
-          <Text style={estilos.titulo}>Bem vindo!</Text>
+          <Text style={estilos.titulo}>Bem vindo ao TripHub!</Text>
+          <Text style={estilos.iconeInicio}>✈️</Text>
 
           <TextInput 
             style={estilos.input} 
