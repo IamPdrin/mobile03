@@ -1,0 +1,108 @@
+# Dependências do Projeto Mobile - Expo App
+# Para instalar todas as dependências, execute:
+# npm install
+
+# ====================
+# DEPENDÊNCIAS PRINCIPAIS
+# ====================
+
+# Framework Expo - Base para desenvolvimento React Native
+expo@~54.0.23
+
+# React e React Native
+react@19.1.0
+react-native@0.81.5
+
+# ====================
+# ROTEAMENTO E NAVEGAÇÃO
+# ====================
+
+# Expo Router - Sistema de roteamento (equivalente ao Next.js)
+expo-router@~6.0.14
+
+# Safe Area Context - Gerencia áreas seguras do dispositivo
+react-native-safe-area-context@~5.6.0
+
+# Screens - Gerenciador de telas nativas
+react-native-screens@~4.16.0
+
+# ====================
+# ARMAZENAMENTO DE DADOS
+# ====================
+
+# Async Storage - Armazenamento local assíncrono
+@react-native-async-storage/async-storage@2.2.0
+
+# SQLite - Banco de dados local
+expo-sqlite@~16.0.9
+
+# Firebase - Backend e autenticação remota
+firebase@^12.6.0
+
+# ====================
+# FUNCIONALIDADES NATIVAS DO DISPOSITIVO
+# ====================
+
+# Câmera
+expo-camera@latest
+expo-media-library@latest
+
+# Calendário
+expo-calendar@latest
+
+# Geolocalização
+expo-location@latest
+react-native-maps@latest
+
+# ====================
+# UTILITÁRIOS
+# ====================
+
+# Status Bar
+expo-status-bar@~3.0.8
+
+# Constantes
+expo-constants@~18.0.10
+
+# Linking (Deep Linking)
+expo-linking@~8.0.8
+
+# ====================
+# DEPENDÊNCIAS DE DESENVOLVIMENTO
+# ====================
+
+# TypeScript
+typescript@~5.9.2
+@types/react@~19.1.10
+
+# ====================
+# INSTRUÇÕES DE INSTALAÇÃO
+# ====================
+
+# 1. Instalar Node.js (versão 18+)
+#    Download: https://nodejs.org/
+
+# 2. Instalar Expo CLI globalmente
+#    npm install -g expo-cli
+
+# 3. Na pasta do projeto, instalar dependências
+#    npm install
+
+# 4. Para adicionar Camera, Calendar e Location
+#    npx expo install expo-camera expo-media-library expo-calendar expo-location react-native-maps
+
+# 5. Para executar o app
+#    npm start          (inicia o Expo Dev Client)
+#    npm run android    (em emulador/dispositivo Android)
+#    npm run ios        (em simulador/dispositivo iOS)
+#    npm run web        (em navegador web)
+
+# ====================
+# NOTAS IMPORTANTES
+# ====================
+
+# - Certifique-se de ter um dispositivo ou emulador instalado antes de executar
+# - Para iOS, você precisa do Xcode instalado
+# - Para Android, você precisa do Android Studio ou SDK instalado
+# - Algumas funcionalidades (câmera, localização, etc.) só funcionam em dispositivos reais ou emuladores/simuladores
+# - Firebase requer configuração de credenciais via firebaseConfig.js

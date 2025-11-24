@@ -17,6 +17,20 @@ export const inicializarBancoDados = async () => {
         criado_em DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `);
+    db.execSync(`
+      CREATE TABLE IF NOT EXISTS viagens (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT NOT NULL,
+        local TEXT NOT NULL,
+        latitude REAL NOT NULL,
+        longitude REAL NOT NULL,
+        foto_uri TEXT,
+        data_viagem DATE NOT NULL,
+        nome_local TEXT,
+        criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(email) REFERENCES usuarios(email)
+      );
+    `);
   } catch (error) {
     console.log('Erro ao inicializar banco de dados:', error);
   }
@@ -52,10 +66,10 @@ export const alterarTipoArmazenamento = async (tipo) => {
 // Cadastrar usuário no SQLite
 export const cadastrarUsuarioLocal = async (email, senha) => {
   try {
-    const statement = db.prepareSync(
-      'INSERT INTO usuarios (email, senha) VALUES (?, ?)'
+    db.runSync(
+      'INSERT INTO usuarios (email, senha) VALUES (?, ?)',
+      [email, senha]
     );
-    statement.execute([email, senha]);
     return { sucesso: true, mensagem: 'Usuário cadastrado localmente' };
   } catch (error) {
     if (error.message.includes('UNIQUE constraint failed')) {
@@ -102,10 +116,10 @@ export const atualizarUsuarioLocal = async (email, dados) => {
       .join(', ');
     const valores = Object.values(dados);
     
-    const statement = db.prepareSync(
-      `UPDATE usuarios SET ${campos} WHERE email = ?`
+    db.runSync(
+      `UPDATE usuarios SET ${campos} WHERE email = ?`,
+      [...valores, email]
     );
-    statement.execute([...valores, email]);
     return { sucesso: true, mensagem: 'Usuário atualizado' };
   } catch (error) {
     console.log('Erro ao atualizar usuário local:', error);
@@ -116,7 +130,7 @@ export const atualizarUsuarioLocal = async (email, dados) => {
 // Deletar usuário local
 export const deletarUsuarioLocal = async (email) => {
   try {
-    db.execSync('DELETE FROM usuarios WHERE email = ?', [email]);
+    db.runSync('DELETE FROM usuarios WHERE email = ?', [email]);
     return { sucesso: true, mensagem: 'Usuário deletado' };
   } catch (error) {
     console.log('Erro ao deletar usuário local:', error);
@@ -249,4 +263,115 @@ export const deletarUsuario = async (email) => {
   return tipo === 'remoto'
     ? deletarUsuarioRemoto(email)
     : deletarUsuarioLocal(email);
+};
+
+// ============ OPERAÇÕES DE VIAGENS (Local) ============
+
+// Registrar nova viagem
+export const registrarViagemLocal = async (email, local, latitude, longitude, fotoUri, dataViagem, nomeLocal) => {
+  try {
+    db.runSync(
+      `INSERT INTO viagens (email, local, latitude, longitude, foto_uri, data_viagem, nome_local) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [email, local, latitude, longitude, fotoUri, dataViagem, nomeLocal]
+    );
+    return { sucesso: true, mensagem: 'Viagem registrada com sucesso' };
+  } catch (error) {
+    console.log('Erro ao registrar viagem:', error);
+    return { sucesso: false, mensagem: 'Erro ao registrar viagem' };
+  }
+};
+
+// Obter viagens do usuário
+export const obterViagensLocal = async (email) => {
+  try {
+    const viagens = db.getAllSync(
+      'SELECT * FROM viagens WHERE email = ? ORDER BY data_viagem DESC',
+      [email]
+    );
+    return viagens || [];
+  } catch (error) {
+    console.log('Erro ao obter viagens:', error);
+    return [];
+  }
+};
+
+// Deletar viagem
+export const deletarViagemLocal = async (id) => {
+  try {
+    db.runSync('DELETE FROM viagens WHERE id = ?', [id]);
+    return { sucesso: true, mensagem: 'Viagem deletada' };
+  } catch (error) {
+    console.log('Erro ao deletar viagem:', error);
+    return { sucesso: false, mensagem: 'Erro ao deletar viagem' };
+  }
+};
+
+// ============ OPERAÇÕES DE VIAGENS (Remoto - Firebase) ============
+
+export const registrarViagemRemoto = async (email, local, latitude, longitude, fotoUri, dataViagem, nomeLocal) => {
+  try {
+    const docRef = doc(firestore, 'viagens', `${email}_${Date.now()}`);
+    await setDoc(docRef, {
+      email,
+      local,
+      latitude,
+      longitude,
+      foto_uri: fotoUri,
+      data_viagem: dataViagem,
+      nome_local: nomeLocal,
+      criado_em: serverTimestamp()
+    });
+    return { sucesso: true, mensagem: 'Viagem registrada com sucesso' };
+  } catch (error) {
+    console.log('Erro ao registrar viagem remoto:', error);
+    return { sucesso: false, mensagem: 'Erro ao registrar viagem' };
+  }
+};
+
+export const obterViagensRemoto = async (email) => {
+  try {
+    const q = query(collection(firestore, 'viagens'), where('email', '==', email));
+    const snap = await getDocs(q);
+    return snap.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.log('Erro ao obter viagens remoto:', error);
+    return [];
+  }
+};
+
+export const deletarViagemRemoto = async (viagemId) => {
+  try {
+    await deleteDoc(doc(firestore, 'viagens', viagemId));
+    return { sucesso: true, mensagem: 'Viagem deletada' };
+  } catch (error) {
+    console.log('Erro ao deletar viagem remoto:', error);
+    return { sucesso: false, mensagem: 'Erro ao deletar viagem' };
+  }
+};
+
+// ============ OPERAÇÕES DE VIAGENS (Genéricas) ============
+
+export const registrarViagem = async (email, local, latitude, longitude, fotoUri, dataViagem, nomeLocal) => {
+  const tipo = await obterTipoArmazenamento();
+  return tipo === 'remoto'
+    ? registrarViagemRemoto(email, local, latitude, longitude, fotoUri, dataViagem, nomeLocal)
+    : registrarViagemLocal(email, local, latitude, longitude, fotoUri, dataViagem, nomeLocal);
+};
+
+export const obterViagens = async (email) => {
+  const tipo = await obterTipoArmazenamento();
+  return tipo === 'remoto'
+    ? obterViagensRemoto(email)
+    : obterViagensLocal(email);
+};
+
+export const deletarViagem = async (id) => {
+  const tipo = await obterTipoArmazenamento();
+  return tipo === 'remoto'
+    ? deletarViagemRemoto(id)
+    : deletarViagemLocal(id);
 };

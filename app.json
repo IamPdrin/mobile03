@@ -2,6 +2,7 @@
   "expo": {
     "name": "appAsync",
     "slug": "appAsync",
+    "scheme": "appasync",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,14 +14,30 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "O app precisa acessar a câmera para capturar fotos",
+        "NSPhotoLibraryAddUsageDescription": "O app precisa salvar fotos na galeria",
+        "NSLocationWhenInUseUsageDescription": "O app precisa acessar sua localização para mostrar sua posição no mapa",
+        "NSLocationAlwaysUsageDescription": "O app precisa acessar sua localização mesmo quando estiver em segundo plano",
+        "NSCalendarsUsageDescription": "O app precisa acessar o calendário para criar eventos"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

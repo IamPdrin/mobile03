@@ -1,6 +1,7 @@
 import React from "react";
 import { router } from "expo-router";
 import { TouchableOpacity, Text, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import estilos from "../styles/style";
 import { verificarLogin, obterUsuario } from "../services/databaseService";
 
@@ -19,8 +20,9 @@ export default function BotaoLogin({ email, senha }) {
 
             if (loginValido) {
                 const usuario = await obterUsuario(email);
+                await AsyncStorage.setItem('usuario', JSON.stringify({ email }));
                 Alert.alert('Login bem-sucedido!', `Bem-vindo, ${email}!`);
-                router.push('/telaDashboard');
+                router.push('/telaDashboardIntegrada');
             } else {
                 Alert.alert('Erro', 'E-mail ou senha incorretos.');
             }
