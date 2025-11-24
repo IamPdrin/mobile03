@@ -1,5 +1,5 @@
 
-# mobile03 - Registro de Viagens
+# TripHub: Registro de Viagens
 
 Um aplicativo mobile desenvolvido com **React Native** e **Expo**, focado no registro, visualização e gerenciamento de viagens, utilizando autenticação, armazenamento no Firebase, seleção de datas e recursos nativos do dispositivo.
 
