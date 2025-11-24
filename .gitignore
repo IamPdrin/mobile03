@@ -39,8 +39,6 @@ yarn-error.*
 # docs do app
 APRESENTACAO.md
 
-DOCUMENTACAO.md
-
 # typescript
 *.tsbuildinfo
 
